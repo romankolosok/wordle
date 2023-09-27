@@ -1,6 +1,10 @@
+import {WORDS} from "./words.js";
+
 const numOfRows = 6
 let activeCell = 0
 let activeRow = 0
+const randomNum = Math.floor(Math.random() * WORDS.length)
+const randomWord = WORDS[randomNum]
 
 function createGrid() {
     const game = document.getElementById('game')
@@ -32,7 +36,33 @@ function removeLetter(){
         activeCell--
         const cell = rows.item(activeRow).getElementsByClassName('cell').item(activeCell)
         cell.textContent = ""
-        console.log(activeCell)
+    }
+}
+
+function checkWord() {
+    if(activeCell === 5) {
+        const cells = rows.item(activeRow).getElementsByClassName('cell')
+        let word = []
+        for(let i = 0; i < cells.length; i++){
+            word.push(cells.item(i).textContent)
+        }
+        word = word.join("").toLowerCase()
+        if(WORDS.includes(word) && activeRow !== 5) {
+            for(let i = 0; i < word.length; i++){
+                if(randomWord.includes(word[i]) && word[i] === randomWord[i]){
+                    cells.item(i).style.backgroundColor = "green"
+                } else if(randomWord.includes(word[i])) {
+                    cells.item(i).style.backgroundColor = "orange"
+                } else {
+                    cells.item(i).style.backgroundColor = "gray"
+                    $(`.key.${word[i].toUpperCase()}`).css("background-color", "gray")
+                }
+            }
+            activeRow++
+            activeCell = 0
+        } else if(!WORDS.includes(word)){
+            alert("There is no such word");
+        }
     }
 }
 
@@ -41,21 +71,13 @@ function removeLetter(){
 
 createGrid()
 
-// document.body.addEventListener('click', (event) => {
-//     if(event.target.className !== "keys" && event.target.classList.contains('key'))
-//         console.log(event.target)
-//         const text = event.target.textContent
-//         console.log(text)
-//         if(text.length === 1){
-//             input(text)
-//         }
-// }, false)
-
 $(".key").click((event) => {
     const text = event.target.textContent
     if(text.length === 1){
         input(text)
     } else if(text === "Del") {
         removeLetter()
+    } else if(text === "Enter"){
+        checkWord()
     }
 })
