@@ -7,12 +7,13 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Epilogue&family=Josefin+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            background-color: #d3d8f0;
+            background-color: #9E8FC3;
         }
 
         #controls {
@@ -49,10 +50,16 @@
             color: white;
             font-weight: bolder;
             font-family: "Comfortaa";
+            box-sizing: border-box;
+        }
+
+        .key.reset {
+            width: 40.5rem;
+            align-self: center;
         }
 
         .key:hover {
-            background-color: white;
+            background-color: #F7EBFF;
             cursor: pointer;
             border: 2px solid #644fcc;
             color: #644fcc;
@@ -64,12 +71,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 3.5rem;
+            line-height: 4rem;
             text-align: center;
             border: 1px solid #644fcc;
+            color: #F7EBFF;
             border-radius: .5rem;
-            font-family: "Josefin Sans";
+            font-family: "Bebas Neue";
             vertical-align: bottom;
+            box-sizing: border-box;
         }
 
         .row {
@@ -116,6 +126,7 @@
                 <div class="key M">M</div>
                 <div class="key Del">Del</div>
             </div>
+            <div class="key reset">Restart</div>
         </div>
     </body>
     <script type="module" src="game.js"></script>

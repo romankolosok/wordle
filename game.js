@@ -24,7 +24,7 @@ function createGrid() {
 const rows = document.getElementsByClassName('row')
 
 function input(letter) {
-    if(activeCell < numOfRows-1) {
+    if(activeCell < 5) {
         const cell = rows.item(activeRow).getElementsByClassName('cell').item(activeCell)
         cell.textContent = letter
         activeCell++
@@ -39,6 +39,7 @@ function removeLetter(){
     }
 }
 
+
 function checkWord() {
     if(activeCell === 5) {
         const cells = rows.item(activeRow).getElementsByClassName('cell')
@@ -48,30 +49,35 @@ function checkWord() {
         }
         let randomWordList = randomWord.split("")
         word = word.join("").toLowerCase()
-        if(WORDS.includes(word) && activeRow < 6) {
+        if(WORDS.includes(word) && activeRow < numOfRows) {
             for(let i = 0; i < word.length; i++){
+                cells.item(i).style.border = "2px solid #F7EBFF"
                 if(randomWord.includes(word[i]) && word[i] === randomWordList[i]){
-                    cells.item(i).style.backgroundColor = "green"
+                    cells.item(i).style.backgroundColor = "#67BAA6"
                     randomWordList.splice(i, 1, "")
                 } else if(randomWordList.includes(word[i])) {
-                    cells.item(i).style.backgroundColor = "orange"
+                    cells.item(i).style.backgroundColor = "#FF8A67"
                 } else {
-                    cells.item(i).style.backgroundColor = "gray"
-                    $(`.key.${word[i].toUpperCase()}`).css("background-color", "gray")
+                    cells.item(i).style.backgroundColor = "#AEA8BA"
+                    $(`.key.${word[i].toUpperCase()}`).css("background-color", "#AEA8BA")
                 }
             }
 
             if(randomWordList.every((el) => el === "")){
                 alert('congratulations you guessed the word!')
-                activeRow = 5
-                activeCell = 4
+                activeRow = null
+                activeCell = null
+                return
             } else {
-                if(activeRow === 5) {
-                    alert('better luck nex time, word: ' + randomWord)
+                if(activeRow === numOfRows-1) {
+                    alert('better luck next time, word: ' + randomWord)
+                    activeRow = null
+                    activeCell = null
+                    return
                 }
             }
 
-            if(activeRow !== 5){
+            if(activeRow !== numOfRows-1){
                 activeRow++
                 activeCell = 0
             }
@@ -88,16 +94,33 @@ createGrid()
 
 $(".key").click((event) => {
     const text = event.target.textContent
+    if(activeCell === null || activeRow === null){
+        if(text === "Restart") {
+            const areYouSure = prompt("Are you sure you want to reload? (yes/no)", "no")
+            if (areYouSure.toLowerCase() === "yes") {
+                location.reload(true)
+            }
+        }
+        return
+    }
     if(text.length === 1){
         input(text)
     } else if(text === "Del") {
         removeLetter()
     } else if(text === "Enter"){
         checkWord()
+    } else if(text === "Restart") {
+        const areYouSure = prompt("Are you sure you want to reload? (yes/no)", "no")
+        if(areYouSure.toLowerCase() === "yes") {
+            location.reload(true)
+        }
     }
 })
 
 $(document).on("keyup", (event) => {
+    if(activeCell === null || activeRow === null){
+        return
+    }
     const key = event.key.toUpperCase()
     if(letters.includes(key)){
         input(key)
